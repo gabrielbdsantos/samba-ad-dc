@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  samba:
+    image: samba-ad-dc:latest
+    build:
+      context: .
+      dockerfile: Containerfile
+      tags:
+        - "samba-ad-dc:latest"
+    container_name: samba-ad-dc
+    privileged: true
+    network_mode: host
+    environment:
+      TZ: ${TZ}
+      SERVER_ROLE: ${SERVER_ROLE:-dc}
+      DNS_BACKEND: ${DNS_BACKEND:-SAMBA_INTERNAL}
+      REALM: ${REALM}
+      DOMAIN: ${DOMAIN}
+      DNS_FORWARD: ${DNS_FORWARD:-'1.1.1.1 8.8.8.8'}
+    volumes:
+      - "./shared/backup:/backup:Z"
+      - "./shared/etc/samba:/etc/samba:Z"
+      - "./shared/var/log/samba:/var/log/samba:Z"
+      - "./shared/var/lib/samba:/var/lib/samba:Z"
