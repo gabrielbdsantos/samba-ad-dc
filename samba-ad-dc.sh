@@ -1,12 +1,6 @@
 #!/bin/bash
 
-# Parameters
-# -----------------------------------------------------
-
-HERE=$(realpath -- $(dirname "${BASH_SOURCE[0]}"))
-
-SHARED_FOLDER=${SHARED_FOLDER:-$HERE/shared}
-SAMBA_PATH=$SHARED_FOLDER/var/lib/samba
+source .env
 
 # Functions
 # -----------------------------------------------------
@@ -18,7 +12,7 @@ usage() {
 }
 
 is-deployed() {
-	[[ -e "$SAMBA_PATH/private/secrets.keytab" ]] &&
+	[[ -e "$SHARED_DIR/var/lib/samba/private/secrets.keytab" ]] &&
 		return 0 ||
 		return 1
 }
@@ -40,10 +34,10 @@ set-admin-pass() {
 
 start() {
 	# Create the necessary shared folders
-	mkdir -p "$HERE/backup"
-	mkdir -p "$SHARED_FOLDER/etc/samba"
-	mkdir -p "$SHARED_FOLDER/var/lib/samba"
-	mkdir -p "$SHARED_FOLDER/var/log/samba"
+	mkdir -p "$BACKUP_DIR"
+	mkdir -p "$SHARED_DIR/etc/samba"
+	mkdir -p "$SHARED_DIR/var/lib/samba"
+	mkdir -p "$SHARED_DIR/var/log/samba"
 
 	! is-deployed && [[ -z $ADMIN_PASS ]] && set-admin-pass
 
@@ -58,7 +52,7 @@ stop() {
 prune() {
 	stop
 	podman image rm samba-ad-dc
-	rm -rf "$SHARED_FOLDER"
+	rm -rf "$SHARED_DIR"
 }
 
 # Execution
