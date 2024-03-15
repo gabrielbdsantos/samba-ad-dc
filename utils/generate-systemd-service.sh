@@ -2,7 +2,7 @@
 
 set -e
 
-HERE=$(realpath -- $(dirname ${BASH_SOURCE[0]}))
+HERE=$(realpath -- $(dirname ${BASH_SOURCE[0]})/..)
 PODMAN=$(which podman-compose)
 
 usage() {
