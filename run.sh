@@ -40,16 +40,12 @@ set-admin-pass() {
 
 start() {
 	# Create the necessary shared folders
-	mkdir -p "$SHARED_FOLDER/backup"
+	mkdir -p "$HERE/backup"
 	mkdir -p "$SHARED_FOLDER/etc/samba"
 	mkdir -p "$SHARED_FOLDER/var/lib/samba"
 	mkdir -p "$SHARED_FOLDER/var/log/samba"
 
 	! is-deployed && [[ -z $ADMIN_PASS ]] && set-admin-pass
-	# ! is-deployed && [[ -z $ADMIN_PASS ]] && {
-	# 	echo "Please, specify the ADMIN_PASS environment variable"
-	# 	exit 1
-	# }
 
 	podman-compose --podman-run-args "-e ADMIN_PASS=$ADMIN_PASS --tty --interactive" up -d
 	unset ADMIN_PASS

@@ -19,7 +19,7 @@ services:
       DOMAIN: ${DOMAIN}
       DNS_FORWARD: ${DNS_FORWARD:-'1.1.1.1 8.8.8.8'}
     volumes:
-      - "./shared/backup:/backup:Z"
+      - "./backup:/backup:Z"
       - "./shared/etc/samba:/etc/samba:Z"
       - "./shared/var/log/samba:/var/log/samba:Z"
       - "./shared/var/lib/samba:/var/lib/samba:Z"
