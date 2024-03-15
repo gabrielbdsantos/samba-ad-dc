@@ -12,7 +12,7 @@ SAMBA_PATH=$SHARED_FOLDER/var/lib/samba
 # -----------------------------------------------------
 
 usage() {
-	echo "USAGE: run.sh { start | stop | restart }"
+	echo "USAGE: ${BASH_SOURCE[0]} { start | stop | restart | prune }"
 
 	exit 1
 }
@@ -78,6 +78,9 @@ restart)
 	;;
 prune)
 	prune
+	;;
+-h | --help)
+	usage
 	;;
 *)
 	usage
