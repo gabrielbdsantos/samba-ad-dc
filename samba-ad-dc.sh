@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+set -o pipefail
+
 source .env
 
 # Functions
@@ -55,6 +58,27 @@ prune() {
 	rm -rf "$SHARED_DIR"
 }
 
+create-systemd-unit() {
+
+	HERE=$(realpath -- $(dirname ${BASH_SOURCE[0]}))
+	PODMAN=$(which podman-compose)
+
+	cat <<EOF
+[Unit]
+Description=Containerized Samba AD DC
+After=network.target
+
+[Service]
+Type=forking
+WorkingDirectory=$HERE
+ExecStart=$PODMAN up -d
+ExecStop=$PODMAN down -v
+
+[Install]
+WantedBy=multi-user.target
+EOF
+}
+
 # Execution
 # -----------------------------------------------------
 
@@ -72,6 +96,9 @@ restart)
 	;;
 prune)
 	prune
+	;;
+systemd)
+	create-systemd-unit
 	;;
 -h | --help)
 	usage
