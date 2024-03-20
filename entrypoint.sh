@@ -15,7 +15,9 @@ if [[ ! -e "$SAMBA_PATH/private/secrets.keytab" ]]; then
 		--realm="${REALM}" \
 		--domain="${DOMAIN}" \
 		--adminpass="${ADMIN_PASS}" \
-		--option="dns forwarder=${DNS_FORWARD}"
+		--option="dns forwarder = ${DNS_FORWARD}" \
+		--options="interfaces = ${LISTEN_INTERFACES}" \
+		--options="bind interfaces only = yes"
 fi
 
 # Link the necessary kerberos configuration file

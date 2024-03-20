@@ -18,6 +18,7 @@ services:
       REALM: ${REALM}
       DOMAIN: ${DOMAIN}
       DNS_FORWARD: ${DNS_FORWARD:-'1.1.1.1 8.8.8.8'}
+      LISTEN_INTERFACES: ${LISTEN_INTERFACES:-'lo'}
     volumes:
       - "${BACKUP_DIR:-./backup}:/backup"
       - "${SHARED_DIR:-./shared}/etc/samba:/etc/samba"
